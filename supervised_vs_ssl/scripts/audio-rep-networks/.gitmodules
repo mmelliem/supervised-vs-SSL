@@ -1,0 +1,12 @@
+[submodule "libs/chcochleagram"]
+	path = libs/chcochleagram
+	url = https://github.com/jenellefeather/chcochleagram.git
+[submodule "libs/kelletal2018"]
+	path = libs/kelletal2018
+	url = https://github.com/mcdermottLab/kelletal2018.git
+[submodule "libs/pycochleagram"]
+	path = libs/pycochleagram
+	url = https://github.com/mcdermottLab/pycochleagram.git
+[submodule "libs/fma"]
+	path = libs/fma
+	url = https://github.com/mdeff/fma.git
