@@ -1,2 +1,2 @@
 # supervised-vs-SSL
-Comparing VGGish and PaSST on genre and word classification tasks, to see how effective supervised and self-supervised learning objectives are. I use different learning functions on untrained and trained datasets to compare the performance of each model.
+Comparing PaSST and BYOL-A on music genre and speech classification tasks to compare the effectives of supervised and self-supervised learning objectives. I use different learning functions on their layers to compare the performance of each model.
