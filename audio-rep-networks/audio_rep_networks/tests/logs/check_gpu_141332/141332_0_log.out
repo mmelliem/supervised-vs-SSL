@@ -1,0 +1,7 @@
+submitit INFO (2025-08-26 22:03:08,113) - Starting with JobEnvironment(job_id=141332, hostname=DESKTOP-PIIAKNP, local_rank=0(1), node=0(1), global_rank=0(1))
+submitit INFO (2025-08-26 22:03:08,113) - Loading pickle: /home/melan/supervised-vs-SSL/supervised_vs_ssl/scripts/audio-rep-networks/audio_rep_networks/tests/logs/check_gpu_141332/141332_submitted.pkl
+Is GPU available: True
+Number of GPUs: 1
+GPU name: NVIDIA GeForce GTX 1060 3GB
+submitit INFO (2025-08-26 22:03:09,418) - Job completed successfully
+submitit INFO (2025-08-26 22:03:09,418) - Exiting after successful completion
