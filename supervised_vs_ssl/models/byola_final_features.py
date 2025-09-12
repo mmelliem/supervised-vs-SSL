@@ -54,7 +54,8 @@ def extract_final_embedding(spec_path, idx):
     x = torch.tensor(spec, dtype=torch.float32).unsqueeze(0).unsqueeze(0).to(device)
     with torch.no_grad():
         feats = model(x)
-    np.save(os.path.join(results_dir, f'{idx:06d}.npy'), feats.cpu().numpy())
+    orig_name = os.path.splitext(os.path.basename(spec_path))[0]
+    np.save(os.path.join(results_dir, f'{orig_name}.npy'), feats.cpu().numpy())
 
 mapping = []
 labels = []
@@ -67,7 +68,7 @@ for idx, spec_path in enumerate(spec_files):
         print(f"[SPEECH] File {idx}: {spec_path}", flush=True)
         print(f"  Speech label (before _): {speech_label}", flush=True)
     elif spec_path.startswith(music_dir):
-        track_id_str = fname[3:6]  # characters 3-5
+        track_id_str = fname[3:6] 
         try:
             track_id = int(track_id_str)
         except ValueError:

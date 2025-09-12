@@ -1,50 +1,74 @@
+import torch
+import numpy as np
 import os
-import pandas as pd
 import glob
-import csv
+import random
+from hear21passt.base import get_basic_model
+import soundfile as sf
+
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+model = get_basic_model(mode="embed_only")
+model.eval()
+model = model.to(device)
 
 # --- Paths ---
-speech_dir = '/home/melan/supervised-vs-SSL/data/preprocessed/noisy_byola_speech'
-music_dir = '/home/melan/supervised-vs-SSL/data/preprocessed/noisy_byola_music'
-music_metadata_path = '/home/melan/supervised-vs-SSL/data/fma_data/fma_metadata/tracks.csv'
-genre_map_path = '/home/melan/supervised-vs-SSL/data/fma_data/fma_metadata/raw_genres.csv'
-output_csv_path = '/home/melan/supervised-vs-SSL/data/labels_mapping.csv'  # <-- Change this to wherever you want
+speech_wav_dir = '/home/melan/supervised-vs-SSL/data/preprocessed/10s_speech'
+music_wav_dir = '/home/melan/supervised-vs-SSL/data/preprocessed/10s_music'
+results_dir = '/home/melan/supervised-vs-SSL/data/results/passt/final_embeddings'
+os.makedirs(results_dir, exist_ok=True)
 
-# --- Load metadata ---
-music_metadata = pd.read_csv(music_metadata_path, index_col=0, header=[0, 1])
-genre_map = pd.read_csv(genre_map_path, index_col='genre_id')['genre_title'].to_dict()
-
-# --- Collect all .npy files ---
-speech_files = glob.glob(os.path.join(speech_dir, '**', '*.npy'), recursive=True)
-music_files = glob.glob(os.path.join(music_dir, '**', '*.npy'), recursive=True)
+# --- Collect and randomize all .wav files ---
+speech_files = glob.glob(os.path.join(speech_wav_dir, '**', '*.wav'), recursive=True)
+music_files = glob.glob(os.path.join(music_wav_dir, '**', '*.wav'), recursive=True)
 all_files = speech_files + music_files
+random.shuffle(all_files)
 
-# --- Write CSV ---
-with open(output_csv_path, 'w', newline='') as csvfile:
-    writer = csv.writer(csvfile)
-    writer.writerow(['file_path', 'label'])  # header
+# --- Extract features and save with original filename ---
+for idx, wav_path in enumerate(all_files):
+    try:
+        waveform, sr = sf.read(wav_path)
+    except Exception as e:
+        print(f"Error reading {wav_path}: {e}")
 
-    for idx, spec_path in enumerate(all_files):
-        fname = os.path.basename(spec_path)
-        if spec_path.startswith(speech_dir):
-            label = fname.split('_')[0]
-        elif spec_path.startswith(music_dir):
-            track_id_str = fname[3:6]
-            try:
-                track_id = int(track_id_str)
-            except ValueError:
-                track_id = None
-            if track_id is not None and track_id in music_metadata.index:
-                genres_str = music_metadata.loc[track_id, ('track', 'genres')]
-                genre_ids = eval(genres_str) if pd.notnull(genres_str) else []
-                genres = [genre_map.get(gid, 'unknown') for gid in genre_ids]
-            else:
-                genres = []
-            label = '|'.join(genres)  # join multiple genres as a string
-        else:
-            label = 'unknown'
-        writer.writerow([spec_path, label])
-        if idx < 5 or idx % 100 == 0:
-            print(f"Processed {idx+1} files...", flush=True)
+    if len(waveform.shape) > 1:  # stereo to mono
+        waveform = np.mean(waveform, axis=1)
+    x = torch.tensor(waveform, dtype=torch.float32).unsqueeze(0).to(device)
+    with torch.no_grad():
+        embedding = model(x)
+    orig_name = os.path.splitext(os.path.basename(wav_path))[0]
+    np.save(os.path.join(results_dir, f'{orig_name}.npy'), embedding.cpu().numpy())
+    if idx < 5 or idx % 100 == 0:
+        print(f"Processed {idx+1} files...", flush=True)   
+    print(f"Processing: {wav_path} -> {orig_name}.npy")
+    
 
-print(f"Labels CSV saved to: {output_csv_path}")
+    import os
+
+    embeddings_dir = '/home/melan/supervised-vs-SSL/data/results/passt/final_embeddings'
+    embedding_files = [os.path.splitext(f)[0] for f in os.listdir(embeddings_dir) if f.endswith('.npy')]
+    print("First 10 embedding files:", embedding_files[:10])
+    print("Total embeddings:", len(embedding_files))
+
+    import pandas as pd
+    df = pd.read_csv('/home/melan/supervised-vs-SSL/data/passt_labels_mapping.csv')
+    csv_basenames = [os.path.splitext(os.path.basename(f))[0] for f in df['file_path'].astype(str)]
+    print("First 10 CSV basenames:", csv_basenames[:10])
+    print("Total CSV entries:", len(csv_basenames))
+    
+    import pandas as pd
+    import os
+
+    embeddings_dir = '/home/melan/supervised-vs-SSL/data/results/passt/final_embeddings'
+    label_csv_path = '/home/melan/supervised-vs-SSL/data/passt_labels_mapping.csv'
+
+    embedding_files = [os.path.splitext(f)[0] for f in os.listdir(embeddings_dir) if f.endswith('.npy')]
+    df = pd.read_csv(label_csv_path)
+    csv_basenames = [os.path.splitext(os.path.basename(f))[0] for f in df['file_path'].astype(str)]
+
+    print("First 5 embedding files:", embedding_files[:5])
+    print("First 5 CSV basenames:", csv_basenames[:5])
+
+    print(sorted([os.path.basename(f) for f in speech_files[:10]]))
+print(sorted([os.path.basename(f) for f in music_files[:10]]))
+    

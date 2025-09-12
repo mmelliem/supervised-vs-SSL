@@ -149,7 +149,7 @@ def compute_passt_log_mel(y, target_sr, n_fft=n_fft, win_length=win_length, hop_
 noise_idx = 0
 
 
-for main_file in music_files:
+for main_file in speech_files:
     main_clips = extract_audio_excerpts_numpy(main_file, clip_length_sec=duration_sec, target_sr=target_sr)
 
     for clip_num, y_main in enumerate(main_clips):
@@ -170,7 +170,7 @@ for main_file in music_files:
         # Overlay and save
         y_overlay = overlay_audio_numpy(y_main_norm, y_noise_norm, SNR=SNR, target_rms=0.1)
         out_name = f"{os.path.splitext(os.path.basename(main_file))[0]}_{clip_num:04d}_{os.path.splitext(os.path.basename(noise_file))[0]}_{SNR}.wav"
-        out_path = os.path.join(music_output_dir, out_name)
+        out_path = os.path.join(speech_output_dir, out_name)
 
         export_wav = False  # Set to False to skip saving .wav files
         export_png = False # Set to False to skip saving .png visualizations
@@ -183,15 +183,15 @@ for main_file in music_files:
             y_overlay, target_sr,
             n_fft=n_fft, win_length=win_length, hop_length=hop_length,
             n_mels=n_mels, fmin=fmin, fmax=fmax, visualize=export_png,
-            save_vis_path=os.path.join(music_output_dir, out_name + ".png") if export_png else None
+            save_vis_path=os.path.join(speech_output_dir, out_name + ".png") if export_png else None
         )
-        npy_path = os.path.join(music_output_dir, out_name + ".npy")
+        npy_path = os.path.join(speech_output_dir, out_name + ".npy")
         np.save(npy_path, mel_spec)
         print(f"    Saved mel spectrogram: {npy_path}")
         print(f"    Mel spectrogram shape: {mel_spec.shape}")
         print(f"    Mel spectrogram shape: {mel_spec.shape}")
 
-        npy_files = [f for f in os.listdir(music_output_dir) if f.endswith('.npy')]
+        npy_files = [f for f in os.listdir(speech_output_dir) if f.endswith('.npy')]
         print(f"Speech .npy files: {len(npy_files)}")
 
  
