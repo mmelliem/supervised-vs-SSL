@@ -1,6 +1,0 @@
-m2r
-sphinx-rtd-theme
-sphinx
-numpy
-scipy
-matplotlib
