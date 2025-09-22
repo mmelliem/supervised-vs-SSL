@@ -62,7 +62,7 @@ if len(X) == 0 or len(y) == 0:
     print("ERROR: No data loaded for classification. Check label matching and file paths.")
     exit()
 
-# Split train/test
+# split train/test
 X_train, X_test, y_train, y_test, train_files, test_files = train_test_split(
     X, y, file_names, test_size=0.2, random_state=42)
 print(f"Train size: {len(X_train)}, Test size: {len(X_test)}")
@@ -82,7 +82,7 @@ y_pred = clf.predict(X_test)
 acc = accuracy_score(y_test, y_pred)
 print(f"Test accuracy: {acc:.4f}")
 
-# Save predictions
+# save predictions
 output_csv = 'passt_predictions.csv'
 with open(output_csv, 'w', newline='') as f:
     writer = csv.writer(f)
@@ -91,7 +91,7 @@ with open(output_csv, 'w', newline='') as f:
         writer.writerow([fname, actual, pred])
 print(f"Saved predictions to {output_csv}")
 
-# Confusion matrix and classification report
+# confusion matrix and classification report
 print("\nConfusion Matrix:")
 print(confusion_matrix(y_test, y_pred))
 

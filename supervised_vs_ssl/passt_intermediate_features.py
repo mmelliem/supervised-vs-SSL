@@ -11,33 +11,25 @@ model = get_basic_model(mode="embed_only")
 model.eval()
 model = model.to(device)
 
-# --- Paths ---
 speech_wav_dir = '/home/melan/supervised-vs-SSL/data/preprocessed/10s_speech'
 music_wav_dir = '/home/melan/supervised-vs-SSL/data/preprocessed/10s_music'
 results_dir = '/home/melan/supervised-vs-SSL/data/results/passt/intermediate_embeddings'
 os.makedirs(results_dir, exist_ok=True)
 
-import random
-
-# --- Collect and randomize all .wav files ---
 speech_files = glob.glob(os.path.join(speech_wav_dir, '**', '*.wav'), recursive=True)
 music_files = glob.glob(os.path.join(music_wav_dir, '**', '*.wav'), recursive=True)
 
-# Randomly sample 250 from each (if there are enough files)
 speech_sample = random.sample(speech_files, min(250, len(speech_files)))
 music_sample = random.sample(music_files, min(250, len(music_files)))
 
 all_files = speech_sample + music_sample
 random.shuffle(all_files)
-# ...existing code...
 
 for name, module in model.named_modules():
     print(f"Layer: {name}, Type: {type(module)}")
 
-# Use correct layer names
 layer_names = [f'net.blocks.{i}' for i in range(12)]
 
-# Create output folders for each layer
 for lname in layer_names:
     os.makedirs(os.path.join(results_dir, lname.replace('.', '_')), exist_ok=True)
 
@@ -69,7 +61,6 @@ def extract_and_save_intermediate(wav_path):
             layer_feat = feats[lname].flatten()[:500]
             np.save(os.path.join(out_dir, f'{orig_name}.npy'), layer_feat)
 
-# ...existing code...
 for idx, wav_path in enumerate(all_files):
     extract_and_save_intermediate(wav_path)
     if idx < 5 or idx % 100 == 0:

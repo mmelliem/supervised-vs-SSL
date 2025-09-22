@@ -19,7 +19,7 @@ os.makedirs(speech_output_dir, exist_ok=True)
 os.makedirs(music_output_dir, exist_ok=True)
 
 
-# --- PARAMETERS ---
+# --- PARAMETERS (adjust for byola/passt) ---
 target_sr = 32000
 duration_sec = 0.95
 n_fft = 1024
@@ -33,15 +33,13 @@ target_len = int(duration_sec * target_sr)
 
 
 def overlay_audio_numpy(y_main, y_noise, SNR=SNR, target_rms=0.1):
-    # Normalize both to target RMS
+    # normalize RMS
     y_main = normalize_rms(y_main, target_rms)
     y_noise = normalize_rms(y_noise, target_rms)
-    # Adjust noise for SNR
+    # adjust noise for SNR
     snr_linear = 10 ** (SNR / 20)
     y_noise_scaled = y_noise / snr_linear
-    # Overlay
     y_overlay = y_main + y_noise_scaled
-    # Clip to [-1, 1] to avoid overflow
     y_overlay = np.clip(y_overlay, -1.0, 1.0)
     return y_overlay
 
@@ -74,29 +72,29 @@ def compute_byola_log_mel(
 ):
     import nnAudio.features
     import torch
-    # Ensure input is mono
+    # mono input
     if y.ndim > 1:
         y = y[0]
-    # Convert to torch tensor
+    # convert to torch tensor
     y_tensor = torch.tensor(y, dtype=torch.float32)
-    # Compute mel spectrogram
+    # compute mel spectrogram
     to_melspec = nnAudio.features.MelSpectrogram(
         sr=target_sr, n_fft=n_fft, win_length=win_length, hop_length=hop_length,
         n_mels=n_mels, fmin=fmin, fmax=fmax, center=True, power=2, verbose=False
     )
     mel = to_melspec(y_tensor)
     log_mel = (mel + torch.finfo(torch.float32).eps).log()
-    # Normalize using provided stats
+    # normalize (byola stats here)
     stats = [-9.660292, 4.7219563]
     mean, std = stats
     log_mel = (log_mel - mean) / std
 
-    # Convert to numpy 2D array
+    # convert to numpy 2d array
     log_mel = log_mel.cpu().numpy()
     if log_mel.ndim == 3:
         log_mel = log_mel.squeeze()  # Remove batch/channel if present
 
-    # Optional visualization
+    # optional visualization
     if visualize:
         plt.figure(figsize=(10, 4))
         librosa.display.specshow(log_mel, sr=target_sr, hop_length=hop_length, x_axis='time', y_axis='mel', fmax=fmax)
@@ -113,7 +111,7 @@ def compute_byola_log_mel(
 
 def compute_passt_log_mel(y, target_sr, n_fft=n_fft, win_length=win_length, hop_length=hop_length,
                                            n_mels=n_mels, fmin=fmin, fmax=fmax, visualize=False, save_vis_path=None):
-    # Compute log mel spectrogram
+    # compute log mel spectrogram
     S = librosa.feature.melspectrogram(
         y=y,
         sr=target_sr,
@@ -126,12 +124,12 @@ def compute_passt_log_mel(y, target_sr, n_fft=n_fft, win_length=win_length, hop_
     )
     log_S = librosa.power_to_db(S, ref=np.max)
 
-    # Normalize
+    # normalize
     mean = np.mean(log_S)
     std = np.std(log_S)
     log_S_norm = (log_S - mean) / std
 
-    # Optional visualization
+    # optional visualization
     if visualize:
         import matplotlib.pyplot as plt
         plt.figure(figsize=(10, 4))
@@ -153,32 +151,31 @@ for main_file in speech_files:
     main_clips = extract_audio_excerpts_numpy(main_file, clip_length_sec=duration_sec, target_sr=target_sr)
 
     for clip_num, y_main in enumerate(main_clips):
-        # Normalize main clip
+        # normalize main clip
         y_main_norm = normalize_rms(y_main, target_rms=0.1)
 
-        # Pick noise file (loop if needed)
+        # pick noise file
         noise_file = noise_files[noise_idx % len(noise_files)]
         noise_idx += 1
 
-        # Load and fix length of noise
+        # load and fix length of noise
         y_noise, sr_noise = librosa.load(noise_file, sr=target_sr)
         y_noise_fixed = y_noise[:target_len] if len(y_noise) >= target_len else np.pad(y_noise, (0, target_len - len(y_noise)), mode='constant')
 
-        # Normalize noise
+        # normalize noise
         y_noise_norm = normalize_rms(y_noise_fixed, target_rms=0.1)
 
-        # Overlay and save
+        # overlay and save
         y_overlay = overlay_audio_numpy(y_main_norm, y_noise_norm, SNR=SNR, target_rms=0.1)
         out_name = f"{os.path.splitext(os.path.basename(main_file))[0]}_{clip_num:04d}_{os.path.splitext(os.path.basename(noise_file))[0]}_{SNR}.wav"
         out_path = os.path.join(speech_output_dir, out_name)
 
-        export_wav = False  # Set to False to skip saving .wav files
-        export_png = False # Set to False to skip saving .png visualizations
+        export_wav = False  # set to False to skip saving .wav files
+        export_png = False # set to False to skip saving .png visualizations
 
         if export_wav:
             sf.write(out_path, y_overlay, target_sr)
 
-        # Compute and optionally save mel spectrogram
         mel_spec = compute_passt_log_mel( # change depending on the model
             y_overlay, target_sr,
             n_fft=n_fft, win_length=win_length, hop_length=hop_length,

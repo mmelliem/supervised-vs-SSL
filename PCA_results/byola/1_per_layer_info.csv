@@ -1,0 +1,15 @@
+layer,n_samples,pc1_var,pc2_var,png,csv
+fc_0,500,0.1945093721151352,0.08860857039690018,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_fc_0.png,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_fc_0.csv
+fc_1,500,0.14147403836250305,0.06416188925504684,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_fc_1.png,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_fc_1.csv
+fc_2,500,0.14147409796714783,0.06416185945272446,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_fc_2.png,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_fc_2.csv
+fc_3,500,0.2009633481502533,0.09348922967910767,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_fc_3.png,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_fc_3.csv
+fc_4,500,0.1451597362756729,0.06787983328104019,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_fc_4.png,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_fc_4.csv
+features_0,500,0.22294093668460846,0.07235414534807205,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_features_0.png,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_features_0.csv
+features_1,500,0.22294111549854279,0.07235419005155563,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_features_1.png,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_features_1.csv
+features_2,500,0.15881089866161346,0.05477871000766754,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_features_2.png,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_features_2.csv
+features_3,500,0.16550447046756744,0.06062789261341095,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_features_3.png,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_features_3.csv
+features_4,500,0.20345048606395721,0.07915816456079483,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_features_4.png,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_features_4.csv
+features_5,500,0.20345047116279602,0.07915811240673065,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_features_5.png,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_features_5.csv
+features_6,500,0.1504778265953064,0.05687412619590759,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_features_6.png,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_features_6.csv
+features_7,500,0.15572679042816162,0.06635011732578278,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_features_7.png,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_features_7.csv
+z_final_embeddings,500,0.14636801183223724,0.06805257499217987,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_z_final_embeddings.png,/home/mellie/supervised-vs-SSL/PCA_results_byola/pca_z_final_embeddings.csv
