@@ -27,7 +27,8 @@ print(f"Number of speech samples: {np.sum(passt_task_labels == 1)}")
 print(f"Number of music samples: {np.sum(passt_task_labels == 0)}")
 
 def process_passt_features():
-    """Process PaSST features, run PCA (2 components), and save a PNG and CSV per layer.
+    """
+    Process PaSST features, run PCA (2 components), and save a PNG and CSV per layer.
     CSV contains: feature_file, task, pc1, pc2
     """
     passt_output_dir = os.path.join(OUTPUT_DIR, 'passt')

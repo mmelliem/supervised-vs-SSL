@@ -10,11 +10,11 @@ sys.path.append('/home/mellie/supervised-vs-SSL/supervised_vs_ssl/models/byol-a/
 spec_dir = '/home/mellie/supervised-vs-SSL/data/2.2_processed_byola'
 
 def main():
-    parser = argparse.ArgumentParser(description='Extract BYOL-A intermediate layer features (CPU-friendly)')
-    parser.add_argument('--spec-dir', default='/home/mellie/supervised-vs-SSL/data/2.2_processed_byola', help='Directory with preprocessed spectrogram .npy files')
-    parser.add_argument('--out-dir', default='/home/mellie/supervised-vs-SSL/data/byola_features', help='Where to write per-layer features')
-    parser.add_argument('--device', default='cpu', help="Device to run on (default 'cpu')")
-    parser.add_argument('--limit', type=int, default=None, help='Optional limit on number of files to process')
+    parser = argparse.ArgumentParser(description='Extract BYOL-A intermediate layer features')
+    parser.add_argument('--spec-dir', default='/home/mellie/supervised-vs-SSL/data/2.2_processed_byola')
+    parser.add_argument('--out-dir', default='/home/mellie/supervised-vs-SSL/data/byola_features')
+    parser.add_argument('--device', default='cpu')
+    parser.add_argument('--limit', type=int, default=None)
     args = parser.parse_args()
 
     print('torch', torch.__version__, 'cuda available:', torch.cuda.is_available())

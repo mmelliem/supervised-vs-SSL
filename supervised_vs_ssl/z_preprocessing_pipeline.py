@@ -92,7 +92,7 @@ def compute_byola_log_mel(
     # convert to numpy 2d array
     log_mel = log_mel.cpu().numpy()
     if log_mel.ndim == 3:
-        log_mel = log_mel.squeeze()  # Remove batch/channel if present
+        log_mel = log_mel.squeeze()  # remove batch/channel if present
 
     # optional visualization
     if visualize:

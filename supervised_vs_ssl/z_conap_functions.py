@@ -1,5 +1,4 @@
-# is there anything outside of audio-rep-network or conap that i'd need?
-# this is all from the conap project, me and lynette wrote these, delete the ones that aren't relevant
+# these functions are all credited to the conap project, me and lynette wrote some of them
 
 import numpy as np
 import matplotlib.pyplot as plt
