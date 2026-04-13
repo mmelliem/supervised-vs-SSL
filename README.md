@@ -22,13 +22,13 @@ For each model I wrote a preprocessing pipeline to:
 
 Then I did feature extraction of final and intermediate layer embeddings for both models. I extracted thousands of final embeddings, and only extracted 500 feature vectors for each layer of intermediate embeddings. PaSST has 13 layers, while BYOL-A has 14.
 
-I looked at the intermediate layer embeddings to see if the models showed any signs of task specialization at any specific layer:
-![PaSST intermediate layer embeddings](3 PASST intermediate embeddings.png)
-![BYOL-A intermediate layer embeddings](5 BYOLA intermediate embeddings.png)
+I looked at the intermediate layer embeddings to see if the models showed any signs of task specialization at any specific layer:<br>
+![PaSST intermediate layer embeddings](3_PASST_intermediate_embeddings.png)<br>
+![BYOL-A intermediate layer embeddings](5_BYOLA_intermediate_embeddings.png)
 
-And I looked at the final embeddings to see how much the models differentiated between speech and music:
-![PaSST final layer embeddings](4 PASST final embeddings.png)
-![BYOL-A final layer embeddings](6 BYOLA final embeddings.png)
+And I looked at the final embeddings to see how much the models differentiated between speech and music:<br>
+![PaSST final layer embeddings](4_PASST_final_embeddings.png)<br>
+![BYOL-A final layer embeddings](6_BYOLA_final_embeddings.png)
 
 
 ## Results
@@ -38,4 +38,6 @@ BYOL-A showed task specialization across layers and had lower accuracy. PaSST sh
 PaSST intermediate layers did not form distinct clusters between music and speech processing. BYOL-A showed significant separation between music and speech processing at early layers.
 
 
-For additional information, read my research proposal and final report. Citations are given there too.
+For additional information, read my research proposal and final report. Citations are given there too.<br>
+![Project Proposal](1_Proposal_Evaluating_Self-Supervised_Models_on_Audio_Processing_Tasks.pdf)<br>
+![Final Report](2_Final_Report_Evaluating_Self-Supervised_Models_on_Audio_Processing_Tasks.pdf)
