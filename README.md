@@ -26,7 +26,7 @@ I looked at the intermediate layer embeddings to see if the models showed any si
 <p align="center">
   <img src="3_PASST_intermediate_embeddings.png" width="300">
   <img src="5_BYOLA_intermediate_embeddings.png" width="300"><br>
-  <em>Left: PaSST final layer embeddings | Right: BYOL-A final layer embeddings</em>
+  <em>Left: PaSST intermediate layer embeddings | Right: BYOL-A intermediate layer embeddings</em>
 </p>
 
 And I looked at the final embeddings to see how much the models differentiated between speech and music:<br>
