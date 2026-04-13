@@ -23,13 +23,18 @@ For each model I wrote a preprocessing pipeline to:
 Then I did feature extraction of final and intermediate layer embeddings for both models. I extracted thousands of final embeddings, and only extracted 500 feature vectors for each layer of intermediate embeddings. PaSST has 13 layers, while BYOL-A has 14.
 
 I looked at the intermediate layer embeddings to see if the models showed any signs of task specialization at any specific layer:<br>
-![PaSST intermediate layer embeddings](3_PASST_intermediate_embeddings.png)<br>
-![BYOL-A intermediate layer embeddings](5_BYOLA_intermediate_embeddings.png)
+<p align="center">
+  <img src="3_PASST_intermediate_embeddings.png" width="300">
+  <img src="5_BYOLA_intermediate_embeddings.png" width="300"><br>
+  <em>Left: PaSST final layer embeddings | Right: BYOL-A final layer embeddings</em>
+</p>
 
 And I looked at the final embeddings to see how much the models differentiated between speech and music:<br>
-![PaSST final layer embeddings](4_PASST_final_embeddings.png)<br>
-![BYOL-A final layer embeddings](6_BYOLA_final_embeddings.png)
-
+<p align="center">
+  <img src="4_PASST_final_embeddings.png" width="300">
+  <img src="6_BYOLA_final_embeddings.png" width="300"><br>
+  <em>Left: PaSST final layer embeddings | Right: BYOL-A final layer embeddings</em>
+</p>
 
 ## Results
 
@@ -39,5 +44,7 @@ PaSST intermediate layers did not form distinct clusters between music and speec
 
 
 For additional information, read my research proposal and final report. Citations are given there too.<br>
+
+
 ![Project Proposal](1_Proposal_Evaluating_Self-Supervised_Models_on_Audio_Processing_Tasks.pdf)<br>
 ![Final Report](2_Final_Report_Evaluating_Self-Supervised_Models_on_Audio_Processing_Tasks.pdf)
