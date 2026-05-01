@@ -24,8 +24,8 @@ Then I did feature extraction of final and intermediate layer embeddings for bot
 
 I looked at the intermediate layer embeddings to see if the models showed any signs of task specialization at any specific layer:<br>
 <p align="center">
-  <img src="3_PASST_intermediate_embeddings.png" width="300">
-  <img src="5_BYOLA_intermediate_embeddings.png" width="300"><br>
+  <img src="3_PASST_intermediate_embeddings.png" width="200">
+  <img src="5_BYOLA_intermediate_embeddings.png" width="200"><br>
   <em>Left: PaSST intermediate layer embeddings | Right: BYOL-A intermediate layer embeddings</em>
 </p>
 
